@@ -1,0 +1,197 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registration Form</title>
+    <style>
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(249, 247, 244);
+      }
+      #user-entries {
+        font-size: xx-large;
+        font-family: cursive;
+        border: 2px solid black;
+        text-align: center;
+        height: 100%;
+      }
+     table,
+      tr,
+      td,
+      th{
+        border: 2px solid black;
+        border-collapse: collapse;
+        font-family: Arial;
+      }
+      form {
+        background-color: white;
+        padding: 20px;
+        margin: 20px;
+        height: 29em;
+        width: 30em;
+        border-radius: 10px;
+      }
+      label {
+        font-size: x-large;
+        text-align: left;
+        padding: 10px;
+        margin: 30px;
+      }
+      input {
+        float: right;
+        height: 2em;
+        font-size: 16px;
+        line-height: 24px;
+        padding-left: 4px;
+        padding-right: 4px;
+        padding-bottom: 2px;
+        padding-top: 2px;
+        border: none;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+      #submit {
+        background-color: rgb(76, 224, 76);
+        font-size: x-large;
+        border: none;
+        padding: 10px;
+        margin-left: 35px;
+        border-radius: 5px;
+        font-family: cursive;
+        font-weight: lighter;
+        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+      }
+      #submit:hover {
+        box-shadow: 2px 8px 10px rgb(74, 222, 128);
+      }
+      #submit:focus {
+        shape-outside: margin-box;
+      }
+      .registration {
+        text-align: center;
+        font-size: xx-large;
+        padding: 10px;
+        position: relative;
+        bottom: 20px;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="cont">
+      <form action="" id="formuser">
+        <div class="registration">Registration Form</div>
+        <label for="name">Name</label
+        ><input
+          type="text"
+          id="name"
+          placeholder="Enter Your Name"
+        /><br /><br />
+        <label for="email">Email</label
+        ><input
+          type="email"
+          id="email"
+          placeholder="Enter Your Email"
+        /><br /><br />
+        <label for="password">Password</label
+        ><input
+          type="password"
+          id="password"
+          placeholder="Enter Password"
+        /><br /><br />
+        <label for="dob">Date of Birth</label
+        ><input
+          type="date"
+          id="dob"
+          style="position: relative; right: 60px; color: red"
+          onsubmit="getval()"
+        /><br /><br />
+        <label for="acceptedterms" style="font-size: large"
+          >Accept Terms & Condition</label
+        ><input
+          type="checkbox"
+          id="acceptedterms"
+          style="position: relative; right: 39%; bottom: 1%; box-shadow: none"
+        /><br /><br />
+        <button type="submit" id="submit"s>Submit</button>
+      </form>
+      <div>
+        <div id="user-entries"></div>
+      </div>
+    </div>
+    <script>
+      let formuser = document.getElementById("formuser");
+      function getVal() {
+        var userDateinput = document.getElementById("dob").value;  
+	 var birthDate = new Date(userDateinput);
+	 var difference=Date.now() - birthDate.getTime();
+	 var  ageDate = new Date(difference); 
+	 var calculatedAge=   Math.abs(ageDate.getUTCFullYear() - 1970);
+	 if(claculatedAge < 18 || calculatedAge >55)
+   {
+     document.getElementById("submit").disabled=true;
+   }
+  }
+      const retrive = () => {
+        let entries = localStorage.getItem("user-entries");
+        if (entries) {
+          entries = JSON.parse(entries);
+        } else {
+          entries = [];
+        }
+        return entries;
+      };
+      let user_entries = retrive();
+      const display = () => {
+        const Entry = retrive();
+        const tableentries = Entry.map((entry) => {
+          const namecell = `<td style="padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;">${entry.name}</td>`;
+          const emailcell = `<td style="padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;">${entry.email}</td>`;
+          const passwordcell = `<td style="padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;">${entry.password}</td>`;
+          const dobcell = `<td style="padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;">${entry.dob}</td>`;
+          const acceptedtermscell = `<td style="padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;">${entry.termsandcondition}</td>`;
+
+          const row = `<tr>${namecell} ${emailcell} ${passwordcell} ${dobcell} ${acceptedtermscell}</tr>`;
+          return row;
+        }).join("\n");
+
+        const table = `<table style="table-layout: auto;width:100%;"><tr>
+          <th padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;>Name</th>
+            <th padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;>Email</th>
+            <th padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;>PassWord</th>
+            <th padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;>Dob</th>
+            <th padding-left:4px;padding-right:4px;padding-bottom:2px;padding-top:2px;>Accepted terms?</th>
+            </tr>${tableentries}</table>`;
+        let detail = document.getElementById("user-entries");
+        detail.innerHTML = table;
+      };
+      let userentries = [];
+      function saveuserform(event) {
+        event.preventDefault();
+        const name = document.getElementById("name").value;
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+        const age = document.getElementById("age").value;
+        let dob = document.getElementById("dob").value;
+        const termsandcondition =
+          document.getElementById("acceptedterms").checked;
+        const entry = {
+          name,
+          email,
+          password,
+          age,
+          dob,
+          termsandcondition,
+        };
+        userentries.push(entry);
+        localStorage.setItem("user-entries", JSON.stringify(userentries));
+        display();
+      }
+      formuser.addEventListener("submit", saveuserform);
+      display();
+    </script>
+  </body>
+</html>
