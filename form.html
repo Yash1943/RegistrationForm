@@ -178,7 +178,7 @@ birthdate.addEventListener("change", () => {
   let Today = new Date();
 
   age = getval(Today, dob);
-  if (age <= 18 || age >= 55) {
+  if (age < 18 || age > 55) {
     birthdate.setCustomValidity("Your age is not lies between 18 and 55");
     birthdate.style.border = "1px solid red";
     return;
